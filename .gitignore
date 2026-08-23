@@ -1,0 +1,14 @@
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node (test tooling, if it ever lands here)
+node_modules/
+npm-debug.log*
