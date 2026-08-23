@@ -161,8 +161,15 @@
     font-size:12px; padding:5px 7px; border:1px solid var(--line); background:#fff;
     font-family:'Inter',sans-serif;
   }
-  .entry-note{ font-size:13px; color:var(--ink); font-style:italic; margin-top:6px; }
-  .entry-note:empty{ display:none; }
+  /* No :empty rule here — .entry-note is a textarea whose text lives in .value,
+     not in a child node, so :empty always matched and hid the field outright. */
+  .entry-note{
+    font-size:13px; color:var(--ink); font-style:italic; margin-top:6px;
+    display:block; width:100%; border:none; background:transparent; resize:vertical;
+    min-height:34px; font-family:'Inter',sans-serif; padding:4px 0;
+    border-bottom:1px dotted var(--line);
+  }
+  .entry-note:focus{ background:#fff; border-bottom-color:var(--brass); padding:4px 6px; }
   .del-btn{
     background:none; border:1px solid var(--rust); color:var(--rust);
     font-size:11px; padding:4px 9px; cursor:pointer; font-family:'IBM Plex Mono',monospace;
@@ -172,6 +179,90 @@
   .outcome-Interested{ color:var(--brass); }
   .outcome-Purchased{ color:var(--olive); }
   .outcome-Declined, .outcome-Ghosted{ color:var(--rust); }
+
+  /* stat sub-line + daily guardrail state */
+  .stat .sub{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-soft); margin-top:5px; letter-spacing:.02em; }
+  .stat.over{ border-color:var(--rust); }
+  .stat.over .num, .stat.over .sub{ color:var(--rust); }
+  .stat.on-target .num{ color:var(--olive); }
+
+  /* breakdowns — what's working */
+  .breakdown-section{ margin-bottom:28px; }
+  .breakdown-section h2{
+    font-family:'Special Elite',monospace;
+    font-size:15px; text-transform:uppercase; letter-spacing:.08em;
+    margin:0 0 12px;
+  }
+  .bd-group{ background:var(--card); border:1px solid var(--line); padding:14px 16px; margin-bottom:12px; }
+  .bd-title{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase;
+    letter-spacing:.1em; color:var(--ink-soft);
+    border-bottom:1px solid var(--line); padding-bottom:7px; margin-bottom:2px;
+  }
+  .bd-row{
+    display:grid; grid-template-columns:1fr 58px 104px 52px;
+    gap:10px; align-items:center;
+    padding:9px 0; border-bottom:1px dotted var(--line);
+  }
+  .bd-row:last-child{ border-bottom:none; }
+  .bd-label{ font-size:13px; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+  .bd-num{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); text-align:right; }
+  .bd-rate{ display:flex; align-items:center; gap:8px; }
+  .bd-bar{ flex:1; height:7px; background:rgba(35,48,63,0.09); position:relative; }
+  .bd-bar span{ position:absolute; top:0; bottom:0; left:0; background:var(--olive); }
+  .bd-bar.thin span{ background:var(--line); }
+  .bd-pct{ font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; min-width:34px; text-align:right; }
+  .bd-pct.none{ color:var(--ink-soft); font-weight:400; }
+  .bd-best{
+    font-family:'IBM Plex Mono',monospace; font-size:8px; letter-spacing:.05em;
+    background:var(--brass); color:var(--card); padding:2px 5px;
+  }
+  .bd-thin{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--ink-soft); font-style:italic; }
+  .bd-foot{ font-size:11px; color:var(--ink-soft); font-style:italic; margin-top:10px; }
+
+  /* entries header + data actions */
+  .entries-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .entries-head h2{ margin:0; }
+  .data-actions{ display:flex; gap:7px; flex-wrap:wrap; }
+  .data-btn{
+    background:none; border:1px solid var(--line); color:var(--ink-soft);
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.04em;
+    text-transform:uppercase; padding:6px 9px; cursor:pointer;
+  }
+  .data-btn:hover{ border-color:var(--ink); color:var(--ink); background:var(--card); }
+
+  /* filters */
+  .filters{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:8px; margin-bottom:10px; }
+  .filters input, .filters select{
+    padding:7px 9px; border:1px solid var(--line); background:#fff;
+    font-family:'Inter',sans-serif; font-size:13px; color:var(--ink); width:100%;
+  }
+  .filter-count{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-bottom:10px; }
+  .status-line{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--olive); margin-bottom:10px; }
+  .status-line.err{ color:var(--rust); }
+
+  /* duplicate-handle warning */
+  .dup-warn{
+    border:1px solid var(--rust); border-left:3px solid var(--rust);
+    background:rgba(156,74,58,0.06); color:var(--rust);
+    font-size:12px; padding:9px 11px; margin-bottom:12px;
+  }
+  .field-note{ font-size:11px; color:var(--rust); margin-top:4px; font-style:italic; }
+
+  .entry-date{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-soft); }
+  .del-btn.armed{ background:var(--rust); color:#fff; }
+
+  @media (max-width:700px){
+    .filters{ grid-template-columns:1fr 1fr; }
+    .bd-row{ grid-template-columns:1fr 50px 80px 44px; gap:7px; }
+  }
+  @media (max-width:560px){
+    .filters{ grid-template-columns:1fr; }
+    .entry-controls{ flex-direction:column; align-items:stretch; }
+    .entry-controls select{ width:100%; }
+    .bd-row{ grid-template-columns:1fr auto; row-gap:6px; }
+    .bd-rate{ grid-column:1 / -1; }
+  }
 
   .foot-note{
     max-width:900px; margin:32px auto 0; font-size:12px; color:var(--ink-soft);
@@ -193,6 +284,11 @@
 
   <div class="wrap">
     <div class="stats" id="stats"></div>
+
+    <div class="breakdown-section">
+      <h2>What's working</h2>
+      <div id="breakdowns"></div>
+    </div>
 
     <div class="stamps-section">
       <h2>Objection tally</h2>
@@ -232,12 +328,32 @@
             </select>
           </div>
         </div>
+        <div class="dup-warn" id="dupWarn" hidden></div>
         <button type="submit" class="submit-btn">Log entry</button>
       </form>
     </div>
 
     <div class="entries-section">
-      <h2>Entries</h2>
+      <div class="entries-head">
+        <h2>Entries</h2>
+        <div class="data-actions">
+          <button type="button" class="data-btn" id="exportJson">Export JSON</button>
+          <button type="button" class="data-btn" id="exportCsv">Export CSV</button>
+          <button type="button" class="data-btn" id="importBtn">Import JSON</button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input type="search" id="fSearch" placeholder="Search handle, collects, notes..." aria-label="Search entries">
+        <select id="fReplied" aria-label="Filter by reply status"></select>
+        <select id="fOutcome" aria-label="Filter by outcome"></select>
+        <select id="fVariant" aria-label="Filter by message variant"></select>
+        <select id="fSort" aria-label="Sort entries"></select>
+      </div>
+
+      <div class="status-line" id="statusLine" hidden></div>
+      <div class="filter-count" id="filterCount"></div>
       <div id="entriesList"></div>
     </div>
   </div>
@@ -247,32 +363,133 @@
 
 <script>
 (function(){
+  'use strict';
+
   const STORAGE_KEY = 'outreach-entries';
   const OBJECTIONS = ['None yet','Price','Authenticity','Shipping & delivery','Who are you','Payment method','Not buying now','Other'];
   const REPLIED = ['Not yet','Replied','No response'];
   const OUTCOMES = ['Pending','Interested','Purchased','Declined','Ghosted'];
+  const SOURCES = ['Comment on unboxing post','LF / WTB post','Hashtag','Other'];
+  const VARIANTS = ['Discovery, no pitch','Identity-first, soft offer','Value-first, no ask','Other'];
+
+  const DAILY_MIN = 20;
+  const DAILY_MAX = 30;
+  // Under this many resolved replies a rate is noise, so we show it but never crown it.
+  const MIN_SAMPLE = 5;
+  const MAX_IMPORT = 5000;
 
   let entries = [];
+  let filters = { q:'', replied:'All', outcome:'All', variant:'All', sort:'newest' };
+  let dupAcknowledged = '';
+  let noteTimer = null;
+  let statusTimer = null;
 
-  async function load(){
+  /* ---------- small helpers ---------- */
+
+  function el(tag, cls, text){
+    const node = document.createElement(tag);
+    if(cls) node.className = cls;
+    if(text != null) node.textContent = text;
+    return node;
+  }
+
+  function status(msg, isError){
+    const line = document.getElementById('statusLine');
+    line.textContent = msg;
+    line.className = 'status-line' + (isError ? ' err' : '');
+    line.hidden = false;
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(()=>{ line.hidden = true; }, 7000);
+  }
+
+  function normHandle(h){
+    return String(h == null ? '' : h).trim().toLowerCase().replace(/^@+/, '');
+  }
+
+  function startOfToday(){
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    return d.getTime();
+  }
+
+  function fmtDate(ts){
+    try{
+      return new Date(ts).toLocaleDateString(undefined, {day:'numeric', month:'short'});
+    }catch(err){
+      return '';
+    }
+  }
+
+  // The one number the whole tool exists to produce. Resolved contacts only:
+  // people messaged an hour ago haven't had a chance to reply, so counting them
+  // in the denominator makes every new batch look like a drop in performance.
+  function tally(list){
+    let replied = 0, noResponse = 0, purchased = 0;
+    list.forEach(e=>{
+      if(e.replied === 'Replied') replied++;
+      else if(e.replied === 'No response') noResponse++;
+      if(e.outcome === 'Purchased') purchased++;
+    });
+    const resolved = replied + noResponse;
+    return {
+      sent: list.length,
+      replied: replied,
+      noResponse: noResponse,
+      resolved: resolved,
+      awaiting: list.length - resolved,
+      purchased: purchased,
+      rate: resolved ? replied / resolved : null
+    };
+  }
+
+  /* ---------- storage ---------- */
+
+  function normaliseEntry(raw){
+    if(!raw || typeof raw !== 'object') return null;
+    const e = {};
+    e.id = (typeof raw.id === 'string' && raw.id) ? raw.id
+         : (Date.now() + '-' + Math.random().toString(36).slice(2,7));
+    // Entries logged before dates were stored still carry their timestamp in the id.
+    const stamped = parseInt(String(e.id).split('-')[0], 10);
+    e.createdAt = Number.isFinite(raw.createdAt) ? raw.createdAt
+                : ((Number.isFinite(stamped) && stamped > 946684800000) ? stamped : Date.now());
+    e.handle    = String(raw.handle || '').trim().slice(0,120) || '@unknown';
+    e.collects  = String(raw.collects || '').trim().slice(0,300);
+    e.note      = String(raw.note || '').slice(0,4000);
+    e.source    = SOURCES.indexOf(raw.source) > -1 ? raw.source : 'Other';
+    e.variant   = VARIANTS.indexOf(raw.variant) > -1 ? raw.variant : 'Other';
+    e.replied   = REPLIED.indexOf(raw.replied) > -1 ? raw.replied : 'Not yet';
+    e.objection = OBJECTIONS.indexOf(raw.objection) > -1 ? raw.objection : 'None yet';
+    e.outcome   = OUTCOMES.indexOf(raw.outcome) > -1 ? raw.outcome : 'Pending';
+    return e;
+  }
+
+  function load(){
+    let parsed = [];
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
-      entries = raw ? JSON.parse(raw) : [];
-    }catch(e){
-      entries = [];
+      parsed = raw ? JSON.parse(raw) : [];
+    }catch(err){
+      parsed = [];
+      status('Saved entries could not be read. Nothing was overwritten — export before logging more.', true);
     }
+    if(!Array.isArray(parsed)) parsed = [];
+    entries = parsed.map(normaliseEntry).filter(Boolean);
+    entries.sort((a,b)=> a.createdAt - b.createdAt);
     render();
   }
 
-  async function save(){
+  function save(){
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    }catch(e){
-      console.error('Could not save entry', e);
+      return true;
+    }catch(err){
+      status('This browser refused to save. Export your ledger now before you lose anything.', true);
+      return false;
     }
   }
 
-  function makeSelect(id, options, current, onChange){
+  function makeSelect(options, current, onChange){
     const sel = document.createElement('select');
     options.forEach(o=>{
       const opt = document.createElement('option');
@@ -285,146 +502,466 @@
   }
 
   function renderStats(){
-    const total = entries.length;
-    const replied = entries.filter(e => e.replied === 'Replied').length;
-    const purchased = entries.filter(e => e.outcome === 'Purchased').length;
-    const rate = total ? Math.round((replied/total)*100) : 0;
+    const t = tally(entries);
+    const today = entries.filter(e => e.createdAt >= startOfToday()).length;
 
-    const stats = [
-      {n: total, l: 'Logged'},
-      {n: replied, l: 'Replied'},
-      {n: rate + '%', l: 'Reply rate'},
-      {n: purchased, l: 'Purchased'}
+    let todayCls = '';
+    let todaySub = 'target ' + DAILY_MIN + '–' + DAILY_MAX + '/day';
+    if(today > DAILY_MAX){
+      todayCls = ' over';
+      todaySub = (today - DAILY_MAX) + ' over the ' + DAILY_MAX + ' cap';
+    }else if(today >= DAILY_MIN){
+      todayCls = ' on-target';
+      todaySub = 'inside target';
+    }else if(today > 0){
+      todaySub = (DAILY_MIN - today) + ' short of ' + DAILY_MIN;
+    }
+
+    const cards = [
+      {n: t.sent, l: 'Logged', sub: t.awaiting + ' awaiting a reply'},
+      {n: today, l: 'Sent today', sub: todaySub, cls: todayCls},
+      {n: t.replied, l: 'Replied', sub: t.noResponse + ' went quiet'},
+      {n: t.rate === null ? '—' : Math.round(t.rate * 100) + '%', l: 'Reply rate',
+       sub: t.resolved ? t.replied + ' of ' + t.resolved + ' resolved' : 'nothing resolved yet'},
+      {n: t.purchased, l: 'Purchased',
+       sub: t.replied ? Math.round((t.purchased / t.replied) * 100) + '% of repliers' : 'no replies yet'}
     ];
 
-    const el = document.getElementById('stats');
-    el.innerHTML = '';
-    stats.forEach(s=>{
-      const div = document.createElement('div');
-      div.className = 'stat';
-      div.innerHTML = `<div class="num">${s.n}</div><div class="lbl">${s.l}</div>`;
-      el.appendChild(div);
+    const host = document.getElementById('stats');
+    host.textContent = '';
+    cards.forEach(c=>{
+      const box = el('div', 'stat' + (c.cls || ''));
+      box.appendChild(el('div','num', String(c.n)));
+      box.appendChild(el('div','lbl', c.l));
+      box.appendChild(el('div','sub', c.sub));
+      host.appendChild(box);
     });
   }
 
+  /* ---------- what's working: reply rate cut by variant and by source ---------- */
+
+  function buildGroup(title, field, options){
+    const group = el('div','bd-group');
+    group.appendChild(el('div','bd-title', title));
+
+    const rows = options
+      .map(opt => ({ label: opt, t: tally(entries.filter(e => e[field] === opt)) }))
+      .filter(r => r.t.sent > 0);
+
+    if(!rows.length){
+      group.appendChild(el('div','empty-note','Nothing logged here yet.'));
+      return group;
+    }
+
+    // Only rows with a real sample can be called the winner, and only if one
+    // of them is clearly ahead. Crowning a 1-of-1 opener would be a lie.
+    let bestLabel = null;
+    const eligible = rows.filter(r => r.t.resolved >= MIN_SAMPLE);
+    if(eligible.length >= 2){
+      const top = eligible.reduce((a,b)=> b.t.rate > a.t.rate ? b : a);
+      if(eligible.filter(r => r.t.rate === top.t.rate).length === 1) bestLabel = top.label;
+    }
+
+    rows.sort((a,b)=>{
+      const ar = a.t.rate === null ? -1 : a.t.rate;
+      const br = b.t.rate === null ? -1 : b.t.rate;
+      if(br !== ar) return br - ar;
+      return b.t.sent - a.t.sent;
+    });
+
+    rows.forEach(r=>{
+      const row = el('div','bd-row');
+
+      const label = el('div','bd-label');
+      label.appendChild(el('span', null, r.label));
+      if(r.label === bestLabel) label.appendChild(el('span','bd-best','BEST'));
+      else if(r.t.resolved < MIN_SAMPLE) label.appendChild(el('span','bd-thin','thin data'));
+      row.appendChild(label);
+
+      row.appendChild(el('div','bd-num', r.t.sent + ' sent'));
+
+      const rate = el('div','bd-rate');
+      const bar = el('div','bd-bar' + (r.t.resolved < MIN_SAMPLE ? ' thin' : ''));
+      const fill = document.createElement('span');
+      fill.style.width = (r.t.rate === null ? 0 : Math.round(r.t.rate * 100)) + '%';
+      bar.appendChild(fill);
+      rate.appendChild(bar);
+      rate.appendChild(el('div','bd-pct' + (r.t.rate === null ? ' none' : ''),
+        r.t.rate === null ? '—' : Math.round(r.t.rate * 100) + '%'));
+      row.appendChild(rate);
+
+      row.appendChild(el('div','bd-num', r.t.purchased + ' won'));
+
+      row.title = r.t.rate === null
+        ? r.label + ': nothing resolved yet, ' + r.t.sent + ' sent'
+        : r.label + ': ' + r.t.replied + ' replied of ' + r.t.resolved + ' resolved, '
+          + r.t.sent + ' sent, ' + r.t.purchased + ' purchased';
+
+      group.appendChild(row);
+    });
+
+    return group;
+  }
+
+  function renderBreakdowns(){
+    const host = document.getElementById('breakdowns');
+    host.textContent = '';
+
+    if(!entries.length){
+      host.appendChild(el('div','empty-note','Nothing to compare yet. Once replies land, this is where you find out which opener is actually earning them.'));
+      return;
+    }
+
+    host.appendChild(buildGroup('By message variant', 'variant', VARIANTS));
+    host.appendChild(buildGroup('By source', 'source', SOURCES));
+    host.appendChild(el('div','bd-foot',
+      'Rates count resolved contacts only — anyone still awaiting a reply is left out of the maths. '
+      + 'Nothing is marked BEST until it has at least ' + MIN_SAMPLE + ' resolved replies behind it and is clearly ahead.'));
+  }
+
   function renderStamps(){
-    const el = document.getElementById('stamps');
-    el.innerHTML = '';
+    const host = document.getElementById('stamps');
+    host.textContent = '';
     const counts = {};
     entries.forEach(e=>{
       if(e.objection && e.objection !== 'None yet'){
-        counts[e.objection] = (counts[e.objection]||0) + 1;
+        counts[e.objection] = (counts[e.objection] || 0) + 1;
       }
     });
     const keys = Object.keys(counts);
     if(!keys.length){
-      el.innerHTML = '<div class="empty-note">No objections logged yet — they will stamp in here as replies come back.</div>';
+      host.appendChild(el('div','empty-note','No objections logged yet — they will stamp in here as replies come back.'));
       return;
     }
-    const max = Math.max(...keys.map(k=>counts[k]));
-    keys.sort((a,b)=>counts[b]-counts[a]).forEach(k=>{
+    const max = Math.max.apply(null, keys.map(k => counts[k]));
+    keys.sort((a,b)=> counts[b] - counts[a]).forEach(k=>{
       const isTop = counts[k] === max;
-      const div = document.createElement('div');
-      div.className = 'stamp' + (isTop ? ' top' : '');
-      div.innerHTML = `${isTop ? '<span class="ribbon">MOST COMMON</span>' : ''}<div class="n">${counts[k]}</div><div class="t">${k}</div>`;
-      el.appendChild(div);
+      const stamp = el('div','stamp' + (isTop ? ' top' : ''));
+      if(isTop) stamp.appendChild(el('span','ribbon','MOST COMMON'));
+      stamp.appendChild(el('div','n', String(counts[k])));
+      stamp.appendChild(el('div','t', k));
+      host.appendChild(stamp);
     });
+  }
+
+  /* ---------- filtering ---------- */
+
+  function fillSelect(id, options, current){
+    const sel = document.getElementById(id);
+    sel.textContent = '';
+    options.forEach(o=>{
+      const opt = document.createElement('option');
+      opt.value = o.value;
+      opt.textContent = o.label;
+      if(o.value === current) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
+  function initFilters(){
+    const plain = v => ({value:v, label:v});
+    fillSelect('fReplied', [{value:'All', label:'Any reply status'}].concat(REPLIED.map(plain)), filters.replied);
+    fillSelect('fOutcome', [{value:'All', label:'Any outcome'}].concat(OUTCOMES.map(plain)), filters.outcome);
+    fillSelect('fVariant', [{value:'All', label:'Any variant'}].concat(VARIANTS.map(plain)), filters.variant);
+    fillSelect('fSort', [
+      {value:'newest',    label:'Newest first'},
+      {value:'oldest',    label:'Oldest first'},
+      {value:'handle',    label:'Handle A–Z'},
+      {value:'objection', label:'By objection'}
+    ], filters.sort);
+
+    document.getElementById('fSearch').addEventListener('input', e=>{
+      filters.q = e.target.value;
+      renderEntries();
+    });
+
+    const keyFor = {fReplied:'replied', fOutcome:'outcome', fVariant:'variant', fSort:'sort'};
+    Object.keys(keyFor).forEach(id=>{
+      document.getElementById(id).addEventListener('change', e=>{
+        filters[keyFor[id]] = e.target.value;
+        renderEntries();
+      });
+    });
+  }
+
+  function visibleEntries(){
+    const q = filters.q.trim().toLowerCase();
+    const list = entries.filter(e=>{
+      if(filters.replied !== 'All' && e.replied !== filters.replied) return false;
+      if(filters.outcome !== 'All' && e.outcome !== filters.outcome) return false;
+      if(filters.variant !== 'All' && e.variant !== filters.variant) return false;
+      if(q){
+        const hay = (e.handle + ' ' + e.collects + ' ' + e.note + ' ' + e.source + ' '
+                   + e.variant + ' ' + e.objection).toLowerCase();
+        if(hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    if(filters.sort === 'oldest')          list.sort((a,b)=> a.createdAt - b.createdAt);
+    else if(filters.sort === 'handle')     list.sort((a,b)=> normHandle(a.handle).localeCompare(normHandle(b.handle)));
+    else if(filters.sort === 'objection')  list.sort((a,b)=> a.objection.localeCompare(b.objection) || b.createdAt - a.createdAt);
+    else                                   list.sort((a,b)=> b.createdAt - a.createdAt);
+
+    return list;
+  }
+
+  function buildRow(entry, number){
+    const row = el('div','entry');
+
+    const top = el('div','entry-top');
+    const left = document.createElement('div');
+    left.appendChild(el('span','entry-no','No. ' + String(number).padStart(3,'0')));
+    left.appendChild(document.createTextNode(' '));
+    left.appendChild(el('span','entry-handle', entry.handle));
+    left.appendChild(document.createTextNode(' '));
+    left.appendChild(el('span','entry-date', fmtDate(entry.createdAt)));
+    top.appendChild(left);
+
+    const meta = el('div','entry-meta');
+    meta.appendChild(el('span','tag src', entry.source));
+    meta.appendChild(el('span','tag src', entry.variant));
+    top.appendChild(meta);
+    row.appendChild(top);
+
+    if(entry.collects){
+      row.appendChild(el('div','entry-meta','Collects: ' + entry.collects));
+    }
+
+    // Changing a dropdown refreshes the summaries but deliberately leaves the list
+    // alone: re-rendering here would drop focus and make rows vanish mid-edit
+    // whenever a filter is active.
+    const controls = el('div','entry-controls');
+    controls.appendChild(makeSelect(REPLIED, entry.replied, v=>{
+      entry.replied = v; save(); refreshSummaries();
+    }));
+    controls.appendChild(makeSelect(OBJECTIONS, entry.objection, v=>{
+      entry.objection = v; save(); refreshSummaries();
+    }));
+    const outcomeSel = makeSelect(OUTCOMES, entry.outcome, v=>{
+      entry.outcome = v;
+      outcomeSel.className = 'outcome-' + v;
+      save(); refreshSummaries();
+    });
+    outcomeSel.className = 'outcome-' + entry.outcome;
+    controls.appendChild(outcomeSel);
+    row.appendChild(controls);
+
+    const note = document.createElement('textarea');
+    note.className = 'entry-note';
+    note.placeholder = 'Paste their objection verbatim here...';
+    note.value = entry.note || '';
+    note.setAttribute('aria-label', 'Notes for ' + entry.handle);
+    // Save while typing — a verbatim objection lost to a closed tab is the one
+    // thing this ledger cannot reconstruct.
+    note.addEventListener('input', e=>{
+      entry.note = e.target.value;
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(save, 400);
+    });
+    note.addEventListener('blur', ()=>{ clearTimeout(noteTimer); save(); });
+    row.appendChild(note);
+
+    const del = el('button','del-btn','Delete');
+    del.type = 'button';
+    let armed = false, armTimer = null;
+    del.addEventListener('click', ()=>{
+      if(!armed){
+        armed = true;
+        del.textContent = 'Confirm delete';
+        del.classList.add('armed');
+        armTimer = setTimeout(()=>{
+          armed = false;
+          del.textContent = 'Delete';
+          del.classList.remove('armed');
+        }, 4000);
+        return;
+      }
+      clearTimeout(armTimer);
+      entries = entries.filter(x => x.id !== entry.id);
+      save();
+      render();
+      status('Deleted ' + entry.handle + '.');
+    });
+    row.appendChild(del);
+
+    return row;
   }
 
   function renderEntries(){
-    const el = document.getElementById('entriesList');
-    el.innerHTML = '';
+    const host = document.getElementById('entriesList');
+    const countEl = document.getElementById('filterCount');
+    host.textContent = '';
+
     if(!entries.length){
-      el.innerHTML = '<div class="empty-note">No entries yet. Log your first contact above.</div>';
+      countEl.textContent = '';
+      host.appendChild(el('div','empty-note','No entries yet. Log your first contact above.'));
       return;
     }
-    // newest first, but keep original ledger number based on insertion order
-    [...entries].reverse().forEach((entry)=>{
-      const originalIndex = entries.indexOf(entry) + 1;
-      const row = document.createElement('div');
-      row.className = 'entry';
 
-      const top = document.createElement('div');
-      top.className = 'entry-top';
-      top.innerHTML = `
-        <div>
-          <span class="entry-no">No. ${String(originalIndex).padStart(3,'0')}</span>
-          &nbsp;<span class="entry-handle">${entry.handle}</span>
-        </div>
-        <div class="entry-meta">
-          <span class="tag src">${entry.source}</span>
-          <span class="tag src">${entry.variant}</span>
-        </div>
-      `;
-      row.appendChild(top);
+    // Ledger numbers follow insertion order and are resolved once here, rather
+    // than with an indexOf scan per row.
+    const numberOf = new Map();
+    entries.forEach((e,i)=> numberOf.set(e.id, i + 1));
 
-      if(entry.collects){
-        const c = document.createElement('div');
-        c.className = 'entry-meta';
-        c.textContent = 'Collects: ' + entry.collects;
-        row.appendChild(c);
-      }
+    const list = visibleEntries();
+    countEl.textContent = (list.length === entries.length)
+      ? 'Showing all ' + entries.length + ' entries'
+      : 'Showing ' + list.length + ' of ' + entries.length + ' entries';
 
-      const controls = document.createElement('div');
-      controls.className = 'entry-controls';
+    if(!list.length){
+      host.appendChild(el('div','empty-note','No entries match these filters.'));
+      return;
+    }
 
-      const repliedSel = makeSelect('replied-'+entry.id, REPLIED, entry.replied, v=>{
-        entry.replied = v; save(); renderStats();
-      });
-      const objectionSel = makeSelect('obj-'+entry.id, OBJECTIONS, entry.objection, v=>{
-        entry.objection = v; save(); renderStamps();
-      });
-      const outcomeSel = makeSelect('out-'+entry.id, OUTCOMES, entry.outcome, v=>{
-        entry.outcome = v;
-        outcomeSel.className = 'outcome-' + v;
-        save(); renderStats();
-      });
-      outcomeSel.className = 'outcome-' + entry.outcome;
+    const frag = document.createDocumentFragment();
+    list.forEach(entry => frag.appendChild(buildRow(entry, numberOf.get(entry.id))));
+    host.appendChild(frag);
+  }
 
-      controls.appendChild(repliedSel);
-      controls.appendChild(objectionSel);
-      controls.appendChild(outcomeSel);
-      row.appendChild(controls);
-
-      const noteWrap = document.createElement('textarea');
-      noteWrap.className = 'entry-note';
-      noteWrap.placeholder = 'Paste their objection verbatim here...';
-      noteWrap.value = entry.note || '';
-      noteWrap.style.width = '100%';
-      noteWrap.style.border = 'none';
-      noteWrap.style.background = 'transparent';
-      noteWrap.style.fontStyle = 'italic';
-      noteWrap.addEventListener('change', e=>{
-        entry.note = e.target.value; save();
-      });
-      row.appendChild(noteWrap);
-
-      const delBtn = document.createElement('button');
-      delBtn.className = 'del-btn';
-      delBtn.textContent = 'Delete';
-      delBtn.addEventListener('click', ()=>{
-        entries = entries.filter(e => e.id !== entry.id);
-        save(); render();
-      });
-      row.appendChild(delBtn);
-
-      el.appendChild(row);
-    });
+  function refreshSummaries(){
+    renderStats();
+    renderBreakdowns();
+    renderStamps();
   }
 
   function render(){
-    renderStats();
-    renderStamps();
+    refreshSummaries();
     renderEntries();
   }
 
-  document.getElementById('entryForm').addEventListener('submit', async (e)=>{
+  /* ---------- duplicate handles ---------- */
+
+  function findDuplicate(handle){
+    const n = normHandle(handle);
+    if(!n) return null;
+    for(let i = entries.length - 1; i >= 0; i--){
+      if(normHandle(entries[i].handle) === n) return entries[i];
+    }
+    return null;
+  }
+
+  /* ---------- export / import ---------- */
+
+  function stamp(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+
+  function download(filename, text, mime){
+    try{
+      const blob = new Blob([text], {type: mime});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(()=> URL.revokeObjectURL(url), 1000);
+    }catch(err){
+      status('This browser blocked the download.', true);
+    }
+  }
+
+  function csvCell(value){
+    let s = (value == null) ? '' : String(value);
+    // A leading =, +, - or @ makes Excel and Sheets treat the cell as a formula.
+    if(/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+
+  function exportJson(){
+    if(!entries.length){ status('Nothing to export yet.', true); return; }
+    download('collector-outreach-' + stamp() + '.json', JSON.stringify(entries, null, 2), 'application/json');
+    status('Exported ' + entries.length + ' entries as JSON.');
+  }
+
+  function exportCsv(){
+    if(!entries.length){ status('Nothing to export yet.', true); return; }
+    const header = ['No.','Logged','Handle','Source','Collects','Variant','Replied','Objection','Outcome','Note'];
+    const lines = [header.map(csvCell).join(',')];
+    entries.forEach((e,i)=>{
+      lines.push([
+        i + 1,
+        new Date(e.createdAt).toISOString(),
+        e.handle, e.source, e.collects, e.variant,
+        e.replied, e.objection, e.outcome, e.note
+      ].map(csvCell).join(','));
+    });
+    download('collector-outreach-' + stamp() + '.csv', lines.join('\r\n'), 'text/csv;charset=utf-8');
+    status('Exported ' + entries.length + ' entries as CSV.');
+  }
+
+  function importJson(file){
+    const reader = new FileReader();
+    reader.onerror = ()=> status('Could not read that file.', true);
+    reader.onload = ()=>{
+      let parsed;
+      try{
+        parsed = JSON.parse(String(reader.result));
+      }catch(err){
+        status('That file is not valid JSON.', true);
+        return;
+      }
+      if(!Array.isArray(parsed)){ status('Expected a JSON array of entries.', true); return; }
+      if(parsed.length > MAX_IMPORT){ status('That file holds over ' + MAX_IMPORT + ' entries — refusing it.', true); return; }
+
+      const known = {};
+      entries.forEach(e=>{ known[e.id] = true; });
+      const incoming = parsed.map(normaliseEntry).filter(e => e && !known[e.id]);
+
+      if(!incoming.length){ status('Nothing new — every entry in that file is already here.'); return; }
+      const noun = incoming.length === 1 ? 'entry' : 'entries';
+      if(!window.confirm('Add ' + incoming.length + ' ' + noun + ' to your ledger?\n\nExisting entries are kept, not replaced.')) return;
+
+      entries = entries.concat(incoming);
+      entries.sort((a,b)=> a.createdAt - b.createdAt);
+      save();
+      render();
+      status('Imported ' + incoming.length + ' ' + noun + '.');
+    };
+    reader.readAsText(file);
+  }
+
+  /* ---------- wiring ---------- */
+
+  document.getElementById('handle').addEventListener('input', e=>{
+    const warn = document.getElementById('dupWarn');
+    if(normHandle(e.target.value) !== dupAcknowledged) dupAcknowledged = '';
+    const dup = findDuplicate(e.target.value);
+    if(dup){
+      warn.hidden = false;
+      warn.textContent = 'Heads up: ' + dup.handle + ' was logged on ' + fmtDate(dup.createdAt)
+        + ' (' + dup.variant + ', ' + dup.replied.toLowerCase() + ').';
+    }else{
+      warn.hidden = true;
+      warn.textContent = '';
+    }
+  });
+
+  document.getElementById('entryForm').addEventListener('submit', e=>{
     e.preventDefault();
-    const handle = document.getElementById('handle').value.trim();
+    const input = document.getElementById('handle');
+    const warn = document.getElementById('dupWarn');
+    const handle = input.value.trim();
     if(!handle) return;
-    entries.push({
+
+    const norm = normHandle(handle);
+    const dup = findDuplicate(handle);
+    if(dup && dupAcknowledged !== norm){
+      dupAcknowledged = norm;
+      warn.hidden = false;
+      warn.textContent = 'You already messaged ' + dup.handle + ' on ' + fmtDate(dup.createdAt)
+        + ' (' + dup.variant + '). Press Log entry again to contact them a second time.';
+      return;
+    }
+
+    entries.push(normaliseEntry({
       id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
-      handle: handle.startsWith('@') ? handle : '@'+handle,
+      createdAt: Date.now(),
+      handle: handle.charAt(0) === '@' ? handle : '@' + handle,
       source: document.getElementById('source').value,
       collects: document.getElementById('collects').value.trim(),
       variant: document.getElementById('variant').value,
@@ -432,12 +969,29 @@
       objection: 'None yet',
       outcome: 'Pending',
       note: ''
-    });
+    }));
+
+    dupAcknowledged = '';
     document.getElementById('entryForm').reset();
-    await save();
+    warn.hidden = true;
+    warn.textContent = '';
+    save();
     render();
+    input.focus();
   });
 
+  document.getElementById('exportJson').addEventListener('click', exportJson);
+  document.getElementById('exportCsv').addEventListener('click', exportCsv);
+  document.getElementById('importBtn').addEventListener('click', ()=>{
+    document.getElementById('importFile').click();
+  });
+  document.getElementById('importFile').addEventListener('change', e=>{
+    const file = e.target.files && e.target.files[0];
+    if(file) importJson(file);
+    e.target.value = '';
+  });
+
+  initFilters();
   load();
 })();
 </script>
