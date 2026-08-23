@@ -1,0 +1,421 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --paper:#EAE3D2;
+    --card:#F6F1E4;
+    --ink:#23303F;
+    --ink-soft:#5B6B7C;
+    --brass:#B4842A;
+    --olive:#3E5A40;
+    --rust:#9C4A3A;
+    --line:#C9BFA0;
+  }
+
+  * { box-sizing:border-box; }
+
+  .ledger-app{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    padding:28px 20px 60px;
+    min-height:100%;
+  }
+
+  .ledger-app *:focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:2px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .ledger-app *{ transition:none !important; animation:none !important; }
+  }
+
+  .head{
+    max-width:900px; margin:0 auto 28px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:16px;
+  }
+  .tab{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; letter-spacing:.14em;
+    background:var(--ink); color:var(--paper);
+    padding:4px 10px; margin-bottom:10px;
+  }
+  .head h1{
+    font-family:'Special Elite',monospace;
+    font-size:clamp(24px,4vw,34px);
+    margin:0 0 6px;
+    letter-spacing:.01em;
+  }
+  .head p{ margin:0; color:var(--ink-soft); font-size:14px; }
+
+  .wrap{ max-width:900px; margin:0 auto; }
+
+  /* stats row */
+  .stats{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px; margin-bottom:24px;
+  }
+  .stat{
+    background:var(--card); border:1px solid var(--line);
+    padding:14px 16px;
+  }
+  .stat .num{ font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; }
+  .stat .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin-top:2px; }
+
+  /* stamp row */
+  .stamps-section{ margin-bottom:28px; }
+  .stamps-section h2, .form-section h2, .entries-section h2{
+    font-family:'Special Elite',monospace;
+    font-size:15px; text-transform:uppercase; letter-spacing:.08em;
+    margin:0 0 12px;
+  }
+  .stamps{ display:flex; flex-wrap:wrap; gap:14px; }
+  .stamp{
+    position:relative;
+    border:2px solid var(--rust); color:var(--rust);
+    border-radius:50%;
+    width:88px; height:88px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    transform:rotate(-4deg);
+    background:rgba(156,74,58,0.04);
+  }
+  .stamp.top{ border-color:var(--brass); color:var(--brass); background:rgba(180,132,42,0.06); }
+  .stamp .n{ font-size:20px; font-weight:600; line-height:1; }
+  .stamp .t{ font-size:9px; text-align:center; padding:0 6px; line-height:1.2; margin-top:3px; text-transform:uppercase; letter-spacing:.03em; }
+  .stamp .ribbon{
+    position:absolute; top:-9px; right:-9px;
+    background:var(--brass); color:var(--card);
+    font-size:8px; padding:2px 5px; letter-spacing:.05em;
+    transform:rotate(8deg);
+  }
+  .empty-note{ color:var(--ink-soft); font-size:13px; font-style:italic; }
+
+  /* form */
+  .form-section{
+    background:var(--card); border:1px solid var(--line);
+    padding:20px; margin-bottom:28px;
+  }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:560px){ .grid2{ grid-template-columns:1fr; } }
+  .field{ margin-bottom:12px; }
+  .field label{
+    display:block; font-size:11px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ink-soft); margin-bottom:5px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; padding:9px 10px;
+    border:1px solid var(--line); background:#fff;
+    font-family:'Inter',sans-serif; font-size:14px; color:var(--ink);
+  }
+  .field textarea{ resize:vertical; min-height:56px; }
+  .submit-btn{
+    background:var(--ink); color:var(--paper);
+    border:none; padding:11px 22px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+    letter-spacing:.04em; cursor:pointer; margin-top:4px;
+  }
+  .submit-btn:hover{ background:var(--olive); }
+
+  /* entries */
+  .entry{
+    background:var(--card); border:1px solid var(--line);
+    border-left:3px solid var(--ink);
+    padding:14px 16px; margin-bottom:10px;
+  }
+  .entry-top{
+    display:flex; justify-content:space-between; align-items:baseline;
+    gap:10px; flex-wrap:wrap; margin-bottom:8px;
+  }
+  .entry-no{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); }
+  .entry-handle{ font-weight:700; font-size:15px; }
+  .entry-meta{ font-size:12px; color:var(--ink-soft); }
+  .tag{
+    display:inline-block; font-size:10px; text-transform:uppercase;
+    letter-spacing:.04em; padding:2px 7px; margin-right:6px;
+    border:1px solid currentColor; font-family:'IBM Plex Mono',monospace;
+  }
+  .tag.src{ color:var(--ink-soft); }
+  .entry-controls{ display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 6px; }
+  .entry-controls select{
+    font-size:12px; padding:5px 7px; border:1px solid var(--line); background:#fff;
+    font-family:'Inter',sans-serif;
+  }
+  .entry-note{ font-size:13px; color:var(--ink); font-style:italic; margin-top:6px; }
+  .entry-note:empty{ display:none; }
+  .del-btn{
+    background:none; border:1px solid var(--rust); color:var(--rust);
+    font-size:11px; padding:4px 9px; cursor:pointer; font-family:'IBM Plex Mono',monospace;
+  }
+  .del-btn:hover{ background:var(--rust); color:#fff; }
+  .outcome-Pending{ color:var(--ink-soft); }
+  .outcome-Interested{ color:var(--brass); }
+  .outcome-Purchased{ color:var(--olive); }
+  .outcome-Declined, .outcome-Ghosted{ color:var(--rust); }
+
+  .foot-note{
+    max-width:900px; margin:32px auto 0; font-size:12px; color:var(--ink-soft);
+    border-top:1px solid var(--line); padding-top:12px;
+  }
+</style>
+
+<div class="ledger-app">
+  <div class="head">
+    <span class="tab">FIELD LOG · 01</span>
+    <h1>Collector Outreach Ledger</h1>
+    <p>Every DM logged. Every objection kept. Read the tally before you send the next batch.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+
+    <div class="stamps-section">
+      <h2>Objection tally</h2>
+      <div class="stamps" id="stamps"></div>
+    </div>
+
+    <div class="form-section">
+      <h2>Log a new contact</h2>
+      <form id="entryForm">
+        <div class="grid2">
+          <div class="field">
+            <label for="handle">Instagram handle</label>
+            <input id="handle" type="text" placeholder="@handle" required>
+          </div>
+          <div class="field">
+            <label for="source">Source</label>
+            <select id="source">
+              <option>Comment on unboxing post</option>
+              <option>LF / WTB post</option>
+              <option>Hashtag</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label for="collects">What they collect</label>
+            <input id="collects" type="text" placeholder="e.g. Japanese sealed, Eeveelutions">
+          </div>
+          <div class="field">
+            <label for="variant">Message variant used</label>
+            <select id="variant">
+              <option>Discovery, no pitch</option>
+              <option>Identity-first, soft offer</option>
+              <option>Value-first, no ask</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Log entry</button>
+      </form>
+    </div>
+
+    <div class="entries-section">
+      <h2>Entries</h2>
+      <div id="entriesList"></div>
+    </div>
+  </div>
+
+  <div class="foot-note">Guardrail: keep sends around 20–30/day, no link in the first message. Update replied / objection / outcome on a row as responses come in — the tally above reads live from this list.</div>
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'outreach-entries';
+  const OBJECTIONS = ['None yet','Price','Authenticity','Shipping & delivery','Who are you','Payment method','Not buying now','Other'];
+  const REPLIED = ['Not yet','Replied','No response'];
+  const OUTCOMES = ['Pending','Interested','Purchased','Declined','Ghosted'];
+
+  let entries = [];
+
+  async function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      entries = raw ? JSON.parse(raw) : [];
+    }catch(e){
+      entries = [];
+    }
+    render();
+  }
+
+  async function save(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }catch(e){
+      console.error('Could not save entry', e);
+    }
+  }
+
+  function makeSelect(id, options, current, onChange){
+    const sel = document.createElement('select');
+    options.forEach(o=>{
+      const opt = document.createElement('option');
+      opt.value = o; opt.textContent = o;
+      if(o === current) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', e => onChange(e.target.value));
+    return sel;
+  }
+
+  function renderStats(){
+    const total = entries.length;
+    const replied = entries.filter(e => e.replied === 'Replied').length;
+    const purchased = entries.filter(e => e.outcome === 'Purchased').length;
+    const rate = total ? Math.round((replied/total)*100) : 0;
+
+    const stats = [
+      {n: total, l: 'Logged'},
+      {n: replied, l: 'Replied'},
+      {n: rate + '%', l: 'Reply rate'},
+      {n: purchased, l: 'Purchased'}
+    ];
+
+    const el = document.getElementById('stats');
+    el.innerHTML = '';
+    stats.forEach(s=>{
+      const div = document.createElement('div');
+      div.className = 'stat';
+      div.innerHTML = `<div class="num">${s.n}</div><div class="lbl">${s.l}</div>`;
+      el.appendChild(div);
+    });
+  }
+
+  function renderStamps(){
+    const el = document.getElementById('stamps');
+    el.innerHTML = '';
+    const counts = {};
+    entries.forEach(e=>{
+      if(e.objection && e.objection !== 'None yet'){
+        counts[e.objection] = (counts[e.objection]||0) + 1;
+      }
+    });
+    const keys = Object.keys(counts);
+    if(!keys.length){
+      el.innerHTML = '<div class="empty-note">No objections logged yet — they will stamp in here as replies come back.</div>';
+      return;
+    }
+    const max = Math.max(...keys.map(k=>counts[k]));
+    keys.sort((a,b)=>counts[b]-counts[a]).forEach(k=>{
+      const isTop = counts[k] === max;
+      const div = document.createElement('div');
+      div.className = 'stamp' + (isTop ? ' top' : '');
+      div.innerHTML = `${isTop ? '<span class="ribbon">MOST COMMON</span>' : ''}<div class="n">${counts[k]}</div><div class="t">${k}</div>`;
+      el.appendChild(div);
+    });
+  }
+
+  function renderEntries(){
+    const el = document.getElementById('entriesList');
+    el.innerHTML = '';
+    if(!entries.length){
+      el.innerHTML = '<div class="empty-note">No entries yet. Log your first contact above.</div>';
+      return;
+    }
+    // newest first, but keep original ledger number based on insertion order
+    [...entries].reverse().forEach((entry)=>{
+      const originalIndex = entries.indexOf(entry) + 1;
+      const row = document.createElement('div');
+      row.className = 'entry';
+
+      const top = document.createElement('div');
+      top.className = 'entry-top';
+      top.innerHTML = `
+        <div>
+          <span class="entry-no">No. ${String(originalIndex).padStart(3,'0')}</span>
+          &nbsp;<span class="entry-handle">${entry.handle}</span>
+        </div>
+        <div class="entry-meta">
+          <span class="tag src">${entry.source}</span>
+          <span class="tag src">${entry.variant}</span>
+        </div>
+      `;
+      row.appendChild(top);
+
+      if(entry.collects){
+        const c = document.createElement('div');
+        c.className = 'entry-meta';
+        c.textContent = 'Collects: ' + entry.collects;
+        row.appendChild(c);
+      }
+
+      const controls = document.createElement('div');
+      controls.className = 'entry-controls';
+
+      const repliedSel = makeSelect('replied-'+entry.id, REPLIED, entry.replied, v=>{
+        entry.replied = v; save(); renderStats();
+      });
+      const objectionSel = makeSelect('obj-'+entry.id, OBJECTIONS, entry.objection, v=>{
+        entry.objection = v; save(); renderStamps();
+      });
+      const outcomeSel = makeSelect('out-'+entry.id, OUTCOMES, entry.outcome, v=>{
+        entry.outcome = v;
+        outcomeSel.className = 'outcome-' + v;
+        save(); renderStats();
+      });
+      outcomeSel.className = 'outcome-' + entry.outcome;
+
+      controls.appendChild(repliedSel);
+      controls.appendChild(objectionSel);
+      controls.appendChild(outcomeSel);
+      row.appendChild(controls);
+
+      const noteWrap = document.createElement('textarea');
+      noteWrap.className = 'entry-note';
+      noteWrap.placeholder = 'Paste their objection verbatim here...';
+      noteWrap.value = entry.note || '';
+      noteWrap.style.width = '100%';
+      noteWrap.style.border = 'none';
+      noteWrap.style.background = 'transparent';
+      noteWrap.style.fontStyle = 'italic';
+      noteWrap.addEventListener('change', e=>{
+        entry.note = e.target.value; save();
+      });
+      row.appendChild(noteWrap);
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'del-btn';
+      delBtn.textContent = 'Delete';
+      delBtn.addEventListener('click', ()=>{
+        entries = entries.filter(e => e.id !== entry.id);
+        save(); render();
+      });
+      row.appendChild(delBtn);
+
+      el.appendChild(row);
+    });
+  }
+
+  function render(){
+    renderStats();
+    renderStamps();
+    renderEntries();
+  }
+
+  document.getElementById('entryForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const handle = document.getElementById('handle').value.trim();
+    if(!handle) return;
+    entries.push({
+      id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
+      handle: handle.startsWith('@') ? handle : '@'+handle,
+      source: document.getElementById('source').value,
+      collects: document.getElementById('collects').value.trim(),
+      variant: document.getElementById('variant').value,
+      replied: 'Not yet',
+      objection: 'None yet',
+      outcome: 'Pending',
+      note: ''
+    });
+    document.getElementById('entryForm').reset();
+    await save();
+    render();
+  });
+
+  load();
+})();
+</script>
